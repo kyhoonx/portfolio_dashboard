@@ -93,7 +93,22 @@
             -webkit-overflow-scrolling: touch;
         }
         .table-min-width {
-            min-width: 600px; /* Ensure columns don't squash too much */
+            min-width: 600px;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 639px) {
+            .table-min-width {
+                min-width: 500px;
+            }
+            /* Hide scrollbar on tab bar but keep scrollable */
+            #mainTabs {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            #mainTabs::-webkit-scrollbar {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -111,9 +126,9 @@
     <div id="app" class="hidden min-h-screen">
         <!-- Header -->
         <header class="bg-white border-b border-gray-200">
-            <div class="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="container mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900 mb-1">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
                         <span class="text-blue-600">Portfolio</span> Dashboard
                     </h1>
                     <div class="flex items-center gap-2">
@@ -148,72 +163,73 @@
         
         <!-- Main Tabs -->
         <div class="bg-white border-b border-gray-200 sticky top-0 z-10">
-            <div class="container mx-auto px-6">
-                <div class="flex gap-8" id="mainTabs">
-                    <button onclick="switchMainTab('overview')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors active" data-tab="overview">
+            <div class="container mx-auto px-3 sm:px-6">
+                <div class="flex gap-4 sm:gap-8 overflow-x-auto" id="mainTabs">
+                    <button onclick="switchMainTab('overview')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors active" data-tab="overview">
                         개요
                     </button>
-                    <button onclick="switchMainTab('accounts')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="accounts">
+                    <button onclick="switchMainTab('accounts')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="accounts">
                         계좌
                     </button>
-                    <button onclick="switchMainTab('assets')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="assets">
+                    <button onclick="switchMainTab('assets')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="assets">
                         자산군
                     </button>
-                    <button onclick="switchMainTab('rebalancing')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="rebalancing">
+                    <button onclick="switchMainTab('rebalancing')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="rebalancing">
                         리밸런싱
                     </button>
-                    <button onclick="switchMainTab('all-holdings')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="all-holdings">
+                    <button onclick="switchMainTab('all-holdings')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="all-holdings">
                         전체 종목
                     </button>
                 </div>
             </div>
         </div>
         
-        <div class="container mx-auto px-6 py-8">
+        <div class="container mx-auto px-3 sm:px-6 py-4 sm:py-8">
             <!-- Overview Tab -->
             <div id="tab-overview" class="main-tab-content fade-in">
                 <!-- Summary Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    <div class="card rounded-lg p-6">
-                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">총 자산</div>
-                        <div class="text-2xl font-bold text-gray-900" id="totalValue">₩0</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-8">
+                    <div class="card rounded-lg p-3 sm:p-6">
+                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">총 자산</div>
+                        <div class="text-lg sm:text-2xl font-bold text-gray-900" id="totalValue">₩0</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
                             <div class="bg-blue-600 h-1 rounded-full" style="width: 100%"></div>
                         </div>
-                        <div class="text-xs text-transparent select-none border-t border-transparent pt-2">Spacer</div>
+                        <div class="text-xs text-transparent select-none border-t border-transparent pt-1 sm:pt-2 hidden sm:block">Spacer</div>
                     </div>
-                    
-                    <div class="card rounded-lg p-6">
-                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">총 투자금</div>
-                        <div class="text-2xl font-bold text-gray-900" id="totalCost">₩0</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
+
+                    <div class="card rounded-lg p-3 sm:p-6">
+                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">총 투자금</div>
+                        <div class="text-lg sm:text-2xl font-bold text-gray-900" id="totalCost">₩0</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
                             <div class="bg-blue-500 h-1 rounded-full" id="costProgress"></div>
                         </div>
-                        <div class="text-xs text-gray-400 flex justify-between border-t border-gray-100 pt-2">
+                        <div class="text-[10px] sm:text-xs text-gray-400 flex justify-between border-t border-gray-100 pt-1 sm:pt-2">
                             <span>보유분 원금</span>
                             <span id="totalInvestedHistory">-</span>
                         </div>
                     </div>
-                    
-                    <div class="card rounded-lg p-6">
-                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">총 손익</div>
-                        <div class="text-2xl font-bold" id="totalPL">₩0</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
+
+                    <div class="card rounded-lg p-3 sm:p-6">
+                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">총 손익</div>
+                        <div class="text-lg sm:text-2xl font-bold" id="totalPL">₩0</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
                             <div class="h-1 rounded-full" id="plProgress"></div>
                         </div>
-                        <div class="text-xs text-gray-400 border-t border-gray-100 pt-2 flex justify-between">
-                            <span>누적 손익(실현 손익 포함)</span>
+                        <div class="text-[10px] sm:text-xs text-gray-400 border-t border-gray-100 pt-1 sm:pt-2 flex justify-between">
+                            <span class="hidden sm:inline">누적 손익(실현 손익 포함)</span>
+                            <span class="sm:hidden">누적 손익</span>
                             <span id="totalCumulativePL">-</span>
                         </div>
                     </div>
-                    
-                    <div class="card rounded-lg p-6">
-                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">수익률</div>
-                        <div class="text-2xl font-bold" id="totalReturn">0%</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
+
+                    <div class="card rounded-lg p-3 sm:p-6">
+                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">수익률</div>
+                        <div class="text-lg sm:text-2xl font-bold" id="totalReturn">0%</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
                             <div class="h-1 rounded-full" id="returnProgress"></div>
                         </div>
-                        <div class="text-xs text-gray-400 border-t border-gray-100 pt-2 flex justify-between">
+                        <div class="text-[10px] sm:text-xs text-gray-400 border-t border-gray-100 pt-1 sm:pt-2 flex justify-between">
                             <span>누적 수익률</span>
                             <span id="totalCumulativeReturn">-</span>
                         </div>
@@ -221,34 +237,34 @@
                 </div>
                 
                 <!-- History Charts -->
-                <div class="grid grid-cols-1 gap-6 mb-6">
-                    <div class="card rounded-lg p-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-6">월별 투자금액 vs 평가금액 추이</h2>
-                        <div class="h-80">
+                <div class="grid grid-cols-1 gap-4 sm:gap-6 mb-4 sm:mb-6">
+                    <div class="card rounded-lg p-4 sm:p-6">
+                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">월별 투자금액 vs 평가금액 추이</h2>
+                        <div class="h-56 sm:h-80">
                             <canvas id="investmentTrendChart"></canvas>
                         </div>
                     </div>
-                    
-                    <div class="card rounded-lg p-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-6">월별 수익 추이</h2>
-                        <div class="h-80">
+
+                    <div class="card rounded-lg p-4 sm:p-6">
+                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">월별 수익 추이</h2>
+                        <div class="h-56 sm:h-80">
                             <canvas id="returnTrendChart"></canvas>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Asset Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="card rounded-lg p-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-6">자산군별 분포</h2>
-                        <div class="h-80">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="card rounded-lg p-4 sm:p-6">
+                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 분포</h2>
+                        <div class="h-64 sm:h-80">
                             <canvas id="assetPieChart"></canvas>
                         </div>
                     </div>
-                    
-                    <div class="card rounded-lg p-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-6">자산군별 수익률</h2>
-                        <div class="h-80">
+
+                    <div class="card rounded-lg p-4 sm:p-6">
+                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 수익률</h2>
+                        <div class="h-64 sm:h-80">
                             <canvas id="assetReturnChart"></canvas>
                         </div>
                     </div>
@@ -257,8 +273,8 @@
             
             <!-- Accounts Tab -->
             <div id="tab-accounts" class="main-tab-content hidden fade-in">
-                <div class="card rounded-lg p-6 mb-6">
-                    <h2 class="text-lg font-bold text-gray-900 mb-6">계좌별 현황</h2>
+                <div class="card rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
+                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">계좌별 현황</h2>
                     <div class="table-scroll">
                         <table class="w-full text-left table-min-width" style="table-layout: fixed;">
                             <thead>
@@ -276,9 +292,9 @@
                     </div>
                 </div>
                 
-                <div class="card rounded-lg p-6">
-                    <h2 class="text-lg font-bold text-gray-900 mb-6">계좌별 비중</h2>
-                    <div class="h-80">
+                <div class="card rounded-lg p-4 sm:p-6">
+                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">계좌별 비중</h2>
+                    <div class="h-64 sm:h-80">
                         <canvas id="accountChart"></canvas>
                     </div>
                 </div>
@@ -286,16 +302,16 @@
             
             <!-- Assets Tab -->
             <div id="tab-assets" class="main-tab-content hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="card rounded-lg p-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-6">자산군별 상세</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="card rounded-lg p-4 sm:p-6">
+                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 상세</h2>
                         <div id="assetsDetailList" class="space-y-4">
                         </div>
                     </div>
                     
-                    <div class="card rounded-lg p-6">
-                        <h2 id="assetCompositionTitle" class="text-lg font-bold text-gray-900 mb-6">자산군별 구성</h2>
-                        <div class="h-96">
+                    <div class="card rounded-lg p-4 sm:p-6">
+                        <h2 id="assetCompositionTitle" class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 구성</h2>
+                        <div class="h-72 sm:h-96">
                             <canvas id="assetBarChart"></canvas>
                         </div>
                         
@@ -323,9 +339,9 @@
             
             <!-- All Holdings Tab -->
             <div id="tab-all-holdings" class="main-tab-content hidden fade-in">
-                <div class="card rounded-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-bold text-gray-900">전체 보유 종목 현황</h2>
+                <div class="card rounded-lg p-4 sm:p-6">
+                    <div class="flex justify-between items-center mb-4 sm:mb-6">
+                        <h2 class="text-sm sm:text-lg font-bold text-gray-900">전체 보유 종목 현황</h2>
                         <div class="text-sm text-gray-500">
                             총 <span id="totalHoldingsCount" class="font-bold text-gray-900">0</span>개 종목
                         </div>
@@ -370,9 +386,9 @@
             
             <!-- Rebalancing Tab -->
             <div id="tab-rebalancing" class="main-tab-content hidden fade-in">
-                <div class="card rounded-lg p-6">
-                    <h2 class="text-lg font-bold text-gray-900 mb-2">리밸런싱 추천</h2>
-                    <p class="text-gray-600 text-sm mb-6">
+                <div class="card rounded-lg p-4 sm:p-6">
+                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-2">리밸런싱 추천</h2>
+                    <p class="text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6">
                         포트폴리오를 선택하여 목표 비중과 현재 비중의 차이를 확인하고, 매수/매도할 종목을 확인하세요.
                     </p>
                     
@@ -1545,42 +1561,42 @@
             
             contentContainer.innerHTML = `
                 <!-- Summary -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="text-gray-500 text-xs font-semibold mb-1">총 보유 종목</div>
-                        <div class="text-2xl font-bold text-gray-900">${all.length}개</div>
+                <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
+                    <div class="border border-gray-200 rounded-lg p-3 sm:p-4">
+                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold mb-1">총 보유 종목</div>
+                        <div class="text-xl sm:text-2xl font-bold text-gray-900">${all.length}개</div>
                             </div>
-                    <div class="border border-red-200 bg-red-50 rounded-lg p-4">
-                        <div class="text-red-700 text-xs font-semibold mb-1">매수 필요</div>
-                        <div class="text-2xl font-bold text-red-600">${buyItems.length}개</div>
+                    <div class="border border-red-200 bg-red-50 rounded-lg p-3 sm:p-4">
+                        <div class="text-red-700 text-[10px] sm:text-xs font-semibold mb-1">매수 필요</div>
+                        <div class="text-xl sm:text-2xl font-bold text-red-600">${buyItems.length}개</div>
                             </div>
-                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
-                        <div class="text-blue-700 text-xs font-semibold mb-1">매도 필요</div>
-                        <div class="text-2xl font-bold text-blue-600">${sellItems.length}개</div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-3 sm:p-4">
+                        <div class="text-blue-700 text-[10px] sm:text-xs font-semibold mb-1">매도 필요</div>
+                        <div class="text-xl sm:text-2xl font-bold text-blue-600">${sellItems.length}개</div>
                             </div>
                         </div>
 
                 <!-- Rebalancing Actions -->
                 ${needsRebalancing ? `
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
                         <!-- Buy -->
-                        <div class="border border-red-200 rounded-lg p-5 bg-red-50/30">
-                            <h3 class="text-base font-bold text-red-700 mb-4">매수 (${buyItems.length})</h3>
+                        <div class="border border-red-200 rounded-lg p-3 sm:p-5 bg-red-50/30">
+                            <h3 class="text-sm sm:text-base font-bold text-red-700 mb-3 sm:mb-4">매수 (${buyItems.length})</h3>
                             ${buyItems.length > 0 ? `
                                 <div class="space-y-3">
                                     ${buyItems.map(item => `
-                                        <div class="bg-white rounded-lg p-4 border border-red-100 hover:border-red-300 transition-colors">
+                                        <div class="bg-white rounded-lg p-3 sm:p-4 border border-red-100 hover:border-red-300 transition-colors">
                                             <div class="flex justify-between items-start mb-2">
-                                                <div>
-                                                    <div class="text-gray-900 font-semibold">${item.name}</div>
-                                                    <div class="text-gray-500 text-xs mt-0.5">${item.ticker} · ${item.account}</div>
+                                                <div class="min-w-0 flex-1 mr-2">
+                                                    <div class="text-gray-900 font-semibold text-sm truncate">${item.name}</div>
+                                                    <div class="text-gray-500 text-xs mt-0.5 truncate">${item.ticker} · ${item.account}</div>
                             </div>
-                                                <div class="text-right">
-                                                    <div class="text-red-600 font-bold">+${item.buySell.toLocaleString()}${item.unit}</div>
+                                                <div class="text-right flex-shrink-0">
+                                                    <div class="text-red-600 font-bold text-sm">+${item.buySell.toLocaleString()}${item.unit}</div>
                                                     ${item.unit === '주' ? `<div class="text-gray-500 text-xs">${formatAmount(item.buySell * item.currentPrice, item.account)}</div>` : ''}
                             </div>
                             </div>
-                                            <div class="flex justify-between text-xs mt-3 pt-3 border-t border-gray-100">
+                                            <div class="flex justify-between text-xs mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100">
                                                 <span class="text-gray-600">현재: ${item.currentWeight.toFixed(2)}%</span>
                                                 <span class="text-blue-600 font-semibold">→ 목표: ${item.targetWeight.toFixed(2)}%</span>
                         </div>
@@ -1593,23 +1609,23 @@
                     </div>
 
                         <!-- Sell -->
-                        <div class="border border-blue-200 rounded-lg p-5 bg-blue-50/30">
-                            <h3 class="text-base font-bold text-blue-700 mb-4">매도 (${sellItems.length})</h3>
+                        <div class="border border-blue-200 rounded-lg p-3 sm:p-5 bg-blue-50/30">
+                            <h3 class="text-sm sm:text-base font-bold text-blue-700 mb-3 sm:mb-4">매도 (${sellItems.length})</h3>
                             ${sellItems.length > 0 ? `
                                 <div class="space-y-3">
                                     ${sellItems.map(item => `
-                                        <div class="bg-white rounded-lg p-4 border border-blue-100 hover:border-blue-300 transition-colors">
+                                        <div class="bg-white rounded-lg p-3 sm:p-4 border border-blue-100 hover:border-blue-300 transition-colors">
                                             <div class="flex justify-between items-start mb-2">
-                                                <div>
-                                                    <div class="text-gray-900 font-semibold">${item.name}</div>
-                                                    <div class="text-gray-500 text-xs mt-0.5">${item.ticker} · ${item.account}</div>
+                                                <div class="min-w-0 flex-1 mr-2">
+                                                    <div class="text-gray-900 font-semibold text-sm truncate">${item.name}</div>
+                                                    <div class="text-gray-500 text-xs mt-0.5 truncate">${item.ticker} · ${item.account}</div>
                                         </div>
-                                                <div class="text-right">
-                                                    <div class="text-blue-600 font-bold">${item.buySell.toLocaleString()}${item.unit}</div>
+                                                <div class="text-right flex-shrink-0">
+                                                    <div class="text-blue-600 font-bold text-sm">${item.buySell.toLocaleString()}${item.unit}</div>
                                                     ${item.unit === '주' ? `<div class="text-gray-500 text-xs">${formatAmount(Math.abs(item.buySell * item.currentPrice), item.account)}</div>` : ''}
                                         </div>
                                         </div>
-                                            <div class="flex justify-between text-xs mt-3 pt-3 border-t border-gray-100">
+                                            <div class="flex justify-between text-xs mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100">
                                                 <span class="text-gray-600">현재: ${item.currentWeight.toFixed(2)}%</span>
                                                 <span class="text-blue-600 font-semibold">→ 목표: ${item.targetWeight.toFixed(2)}%</span>
                                             </div>
@@ -1630,20 +1646,20 @@
                 `}
                 
                 <!-- All Holdings -->
-                <div class="border border-gray-200 rounded-lg p-5">
-                    <h3 class="text-base font-bold text-gray-900 mb-4">전체 보유 종목 (${all.length})</h3>
-                    
+                <div class="border border-gray-200 rounded-lg p-3 sm:p-5">
+                    <h3 class="text-sm sm:text-base font-bold text-gray-900 mb-3 sm:mb-4">전체 보유 종목 (${all.length})</h3>
+
                     <!-- Search -->
-                    <div class="mb-4">
-                                        <input type="text" 
+                    <div class="mb-3 sm:mb-4">
+                                        <input type="text"
                                id="holdingsSearch"
-                                               placeholder="종목 검색..." 
+                                               placeholder="종목 검색..."
                                oninput="filterHoldings(this.value)"
-                               class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors">
+                               class="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors">
                                     </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
+
+                    <div class="overflow-x-auto table-scroll">
+                        <table class="w-full text-left table-min-width">
                                         <thead>
                                 <tr class="border-b border-gray-200">
                                     <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase">종목</th>
