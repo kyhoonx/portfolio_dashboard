@@ -93,22 +93,7 @@
             -webkit-overflow-scrolling: touch;
         }
         .table-min-width {
-            min-width: 600px;
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 639px) {
-            .table-min-width {
-                min-width: 500px;
-            }
-            /* Hide scrollbar on tab bar but keep scrollable */
-            #mainTabs {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            #mainTabs::-webkit-scrollbar {
-                display: none;
-            }
+            min-width: 600px; /* Ensure columns don't squash too much */
         }
     </style>
 </head>
@@ -116,9 +101,9 @@
     <!-- Loading State -->
     <div id="loading" class="flex flex-col items-center justify-center min-h-screen">
         <div class="loader ease-linear rounded-full border-4 border-gray-200 h-16 w-16 mb-4"></div>
-        <p class="text-gray-900 text-lg font-medium">포트폴리오 데이터 로딩 중...</p>
+        <p class="text-gray-900 text-lg font-medium">Ìè¨Ìä∏Ìè¥Î¶¨Ïò§ Îç∞Ïù¥ÌÑ∞ Î°úÎî© Ï§ë...</p>
         <button id="retryBtn" class="hidden mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="init()">
-            다시 시도
+            Îã§Ïãú ÏãúÎèÑ
         </button>
     </div>
     
@@ -126,16 +111,16 @@
     <div id="app" class="hidden min-h-screen">
         <!-- Header -->
         <header class="bg-white border-b border-gray-200">
-            <div class="container mx-auto px-3 sm:px-6 py-4 sm:py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 sm:gap-4">
+            <div class="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-1">
                         <span class="text-blue-600">Portfolio</span> Dashboard
                     </h1>
                     <div class="flex items-center gap-2">
-                        <p class="text-gray-600 text-sm">포트폴리오 현황 및 분석</p>
+                        <p class="text-gray-600 text-sm">Ïã§ÏãúÍ∞Ñ Ìè¨Ìä∏Ìè¥Î¶¨Ïò§ ÌòÑÌô© Î∞è Î∂ÑÏÑù</p>
                         <span class="text-gray-300">|</span>
                         <div id="lastUpdate" class="text-gray-500 text-xs">
-                            <span id="updateTime"></span>
+                            <span id="updateTime"></span> ÏóÖÎç∞Ïù¥Ìä∏
                         </div>
                     </div>
                 </div>
@@ -163,108 +148,107 @@
         
         <!-- Main Tabs -->
         <div class="bg-white border-b border-gray-200 sticky top-0 z-10">
-            <div class="container mx-auto px-3 sm:px-6">
-                <div class="flex gap-4 sm:gap-8 overflow-x-auto" id="mainTabs">
-                    <button onclick="switchMainTab('overview')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors active" data-tab="overview">
-                        개요
+            <div class="container mx-auto px-6">
+                <div class="flex gap-8" id="mainTabs">
+                    <button onclick="switchMainTab('overview')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors active" data-tab="overview">
+                        Í∞úÏöî
                     </button>
-                    <button onclick="switchMainTab('accounts')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="accounts">
-                        계좌
+                    <button onclick="switchMainTab('accounts')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="accounts">
+                        Í≥ÑÏ¢å
                     </button>
-                    <button onclick="switchMainTab('assets')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="assets">
-                        자산군
+                    <button onclick="switchMainTab('assets')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="assets">
+                        ÏûêÏÇ∞Íµ∞
                     </button>
-                    <button onclick="switchMainTab('rebalancing')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="rebalancing">
-                        리밸런싱
+                    <button onclick="switchMainTab('rebalancing')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="rebalancing">
+                        Î¶¨Î∞∏Îü∞Ïã±
                     </button>
-                    <button onclick="switchMainTab('all-holdings')" class="main-tab px-1 py-3 sm:py-4 font-semibold text-xs sm:text-sm whitespace-nowrap transition-colors" data-tab="all-holdings">
-                        전체 종목
+                    <button onclick="switchMainTab('all-holdings')" class="main-tab px-1 py-4 font-semibold text-sm transition-colors" data-tab="all-holdings">
+                        Ï†ÑÏ≤¥ Ï¢ÖÎ™©
                     </button>
                 </div>
             </div>
         </div>
         
-        <div class="container mx-auto px-3 sm:px-6 py-4 sm:py-8">
+        <div class="container mx-auto px-6 py-8">
             <!-- Overview Tab -->
             <div id="tab-overview" class="main-tab-content fade-in">
                 <!-- Summary Cards -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-8">
-                    <div class="card rounded-lg p-3 sm:p-6">
-                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">총 자산</div>
-                        <div class="text-lg sm:text-2xl font-bold text-gray-900" id="totalValue">₩0</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="card rounded-lg p-6">
+                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">Ï¥ù ÏûêÏÇ∞</div>
+                        <div class="text-2xl font-bold text-gray-900" id="totalValue">‚Ç©0</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
                             <div class="bg-blue-600 h-1 rounded-full" style="width: 100%"></div>
                         </div>
-                        <div class="text-xs text-transparent select-none border-t border-transparent pt-1 sm:pt-2 hidden sm:block">Spacer</div>
+                        <div class="text-xs text-transparent select-none border-t border-transparent pt-2">Spacer</div>
                     </div>
-
-                    <div class="card rounded-lg p-3 sm:p-6">
-                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">총 투자금</div>
-                        <div class="text-lg sm:text-2xl font-bold text-gray-900" id="totalCost">₩0</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
+                    
+                    <div class="card rounded-lg p-6">
+                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">Ï¥ù Ìà¨ÏûêÍ∏à</div>
+                        <div class="text-2xl font-bold text-gray-900" id="totalCost">‚Ç©0</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
                             <div class="bg-blue-500 h-1 rounded-full" id="costProgress"></div>
                         </div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 flex justify-between border-t border-gray-100 pt-1 sm:pt-2">
-                            <span>보유분 원금</span>
+                        <div class="text-xs text-gray-400 flex justify-between border-t border-gray-100 pt-2">
+                            <span>Î≥¥Ïú†Î∂Ñ ÏõêÍ∏à</span>
                             <span id="totalInvestedHistory">-</span>
                         </div>
                     </div>
-
-                    <div class="card rounded-lg p-3 sm:p-6">
-                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">총 손익</div>
-                        <div class="text-lg sm:text-2xl font-bold" id="totalPL">₩0</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
+                    
+                    <div class="card rounded-lg p-6">
+                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">Ï¥ù ÏÜêÏùµ</div>
+                        <div class="text-2xl font-bold" id="totalPL">‚Ç©0</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
                             <div class="h-1 rounded-full" id="plProgress"></div>
                         </div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 border-t border-gray-100 pt-1 sm:pt-2 flex justify-between">
-                            <span class="hidden sm:inline">누적 손익(실현 손익 포함)</span>
-                            <span class="sm:hidden">누적 손익</span>
+                        <div class="text-xs text-gray-400 border-t border-gray-100 pt-2 flex justify-between">
+                            <span>ÎàÑÏ†Å ÏÜêÏùµ(Ïã§ÌòÑ ÏÜêÏùµ Ìè¨Ìï®)</span>
                             <span id="totalCumulativePL">-</span>
                         </div>
                     </div>
-
-                    <div class="card rounded-lg p-3 sm:p-6">
-                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wide mb-1 sm:mb-2">수익률</div>
-                        <div class="text-lg sm:text-2xl font-bold" id="totalReturn">0%</div>
-                        <div class="w-full bg-gray-100 rounded-full h-1 mt-2 sm:mt-3 mb-1 sm:mb-2">
+                    
+                    <div class="card rounded-lg p-6">
+                        <div class="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2">ÏàòÏùµÎ•†</div>
+                        <div class="text-2xl font-bold" id="totalReturn">0%</div>
+                        <div class="w-full bg-gray-100 rounded-full h-1 mt-3 mb-2">
                             <div class="h-1 rounded-full" id="returnProgress"></div>
                         </div>
-                        <div class="text-[10px] sm:text-xs text-gray-400 border-t border-gray-100 pt-1 sm:pt-2 flex justify-between">
-                            <span>누적 수익률</span>
+                        <div class="text-xs text-gray-400 border-t border-gray-100 pt-2 flex justify-between">
+                            <span>ÎàÑÏ†Å ÏàòÏùµÎ•†</span>
                             <span id="totalCumulativeReturn">-</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- History Charts -->
-                <div class="grid grid-cols-1 gap-4 sm:gap-6 mb-4 sm:mb-6">
-                    <div class="card rounded-lg p-4 sm:p-6">
-                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">월별 투자금액 vs 평가금액 추이</h2>
-                        <div class="h-56 sm:h-80">
+                <div class="grid grid-cols-1 gap-6 mb-6">
+                    <div class="card rounded-lg p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">ÏõîÎ≥Ñ Ìà¨ÏûêÍ∏àÏï° vs ÌèâÍ∞ÄÍ∏àÏï° Ï∂îÏù¥</h2>
+                        <div class="h-80">
                             <canvas id="investmentTrendChart"></canvas>
                         </div>
                     </div>
-
-                    <div class="card rounded-lg p-4 sm:p-6">
-                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">월별 수익 추이</h2>
-                        <div class="h-56 sm:h-80">
+                    
+                    <div class="card rounded-lg p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">ÏõîÎ≥Ñ ÏàòÏùµ Ï∂îÏù¥</h2>
+                        <div class="h-80">
                             <canvas id="returnTrendChart"></canvas>
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Asset Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                    <div class="card rounded-lg p-4 sm:p-6">
-                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 분포</h2>
-                        <div class="h-64 sm:h-80">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card rounded-lg p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">ÏûêÏÇ∞Íµ∞Î≥Ñ Î∂ÑÌè¨</h2>
+                        <div class="h-80">
                             <canvas id="assetPieChart"></canvas>
                         </div>
                     </div>
-
-                    <div class="card rounded-lg p-4 sm:p-6">
-                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 수익률</h2>
-                        <div class="h-64 sm:h-80">
+                    
+                    <div class="card rounded-lg p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">ÏûêÏÇ∞Íµ∞Î≥Ñ ÏàòÏùµÎ•†</h2>
+                        <div class="h-80">
                             <canvas id="assetReturnChart"></canvas>
                         </div>
                     </div>
@@ -273,17 +257,17 @@
             
             <!-- Accounts Tab -->
             <div id="tab-accounts" class="main-tab-content hidden fade-in">
-                <div class="card rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
-                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">계좌별 현황</h2>
+                <div class="card rounded-lg p-6 mb-6">
+                    <h2 class="text-lg font-bold text-gray-900 mb-6">Í≥ÑÏ¢åÎ≥Ñ ÌòÑÌô©</h2>
                     <div class="table-scroll">
-                        <table class="w-full text-left table-min-width" style="table-layout: fixed;">
+                        <table class="w-full text-left" style="table-layout: fixed;">
                             <thead>
                                 <tr class="border-b border-gray-200">
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase" style="width: 30%;">계좌</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 20%;">평가금액</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 20%;">투자금</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 15%;">손익</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 15%;">수익률</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase" style="width: 30%;">Í≥ÑÏ¢å</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 25%;">ÌèâÍ∞ÄÍ∏àÏï°</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right hidden sm:table-cell" style="width: 20%;">Ìà¨ÏûêÍ∏à</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 25%;">ÏÜêÏùµ</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right" style="width: 20%;">ÏàòÏùµÎ•†</th>
                                 </tr>
                             </thead>
                             <tbody id="accountsTableBody" class="divide-y divide-gray-100">
@@ -292,9 +276,9 @@
                     </div>
                 </div>
                 
-                <div class="card rounded-lg p-4 sm:p-6">
-                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">계좌별 비중</h2>
-                    <div class="h-64 sm:h-80">
+                <div class="card rounded-lg p-6">
+                    <h2 class="text-lg font-bold text-gray-900 mb-6">Í≥ÑÏ¢åÎ≥Ñ ÎπÑÏ§ë</h2>
+                    <div class="h-80">
                         <canvas id="accountChart"></canvas>
                     </div>
                 </div>
@@ -302,30 +286,30 @@
             
             <!-- Assets Tab -->
             <div id="tab-assets" class="main-tab-content hidden fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                    <div class="card rounded-lg p-4 sm:p-6">
-                        <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 상세</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card rounded-lg p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-6">ÏûêÏÇ∞Íµ∞Î≥Ñ ÏÉÅÏÑ∏</h2>
                         <div id="assetsDetailList" class="space-y-4">
                         </div>
                     </div>
                     
-                    <div class="card rounded-lg p-4 sm:p-6">
-                        <h2 id="assetCompositionTitle" class="text-sm sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">자산군별 구성</h2>
-                        <div class="h-72 sm:h-96">
+                    <div class="card rounded-lg p-6">
+                        <h2 id="assetCompositionTitle" class="text-lg font-bold text-gray-900 mb-6">ÏûêÏÇ∞Íµ∞Î≥Ñ Íµ¨ÏÑ±</h2>
+                        <div class="h-96">
                             <canvas id="assetBarChart"></canvas>
                         </div>
                         
                         <!-- Asset Class Holdings Detail -->
                         <div id="assetClassHoldings" class="mt-8 pt-6 border-t border-gray-100 hidden">
-                            <h3 class="text-sm font-bold text-gray-900 mb-4" id="assetClassHoldingsTitle">보유 종목 상세</h3>
+                            <h3 class="text-sm font-bold text-gray-900 mb-4" id="assetClassHoldingsTitle">Î≥¥Ïú† Ï¢ÖÎ™© ÏÉÅÏÑ∏</h3>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
                                     <thead>
                                         <tr class="border-b border-gray-200">
-                                            <th class="pb-2 pl-1 text-gray-500 font-semibold text-xs">종목</th>
-                                            <th class="pb-2 text-gray-500 font-semibold text-xs text-right">수량</th>
-                                            <th class="pb-2 text-gray-500 font-semibold text-xs text-right">평가금액</th>
-                                            <th class="pb-2 pr-1 text-gray-500 font-semibold text-xs text-right">손익</th>
+                                            <th class="pb-2 pl-1 text-gray-500 font-semibold text-xs">Ï¢ÖÎ™©</th>
+                                            <th class="pb-2 text-gray-500 font-semibold text-xs text-right">ÏàòÎüâ</th>
+                                            <th class="pb-2 text-gray-500 font-semibold text-xs text-right">ÌèâÍ∞ÄÍ∏àÏï°</th>
+                                            <th class="pb-2 pr-1 text-gray-500 font-semibold text-xs text-right">ÏÜêÏùµ</th>
                                         </tr>
                                     </thead>
                                     <tbody id="assetClassHoldingsBody" class="divide-y divide-gray-100">
@@ -339,11 +323,11 @@
             
             <!-- All Holdings Tab -->
             <div id="tab-all-holdings" class="main-tab-content hidden fade-in">
-                <div class="card rounded-lg p-4 sm:p-6">
-                    <div class="flex justify-between items-center mb-4 sm:mb-6">
-                        <h2 class="text-sm sm:text-lg font-bold text-gray-900">전체 보유 종목 현황</h2>
+                <div class="card rounded-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-gray-900">Ï†ÑÏ≤¥ Î≥¥Ïú† Ï¢ÖÎ™© ÌòÑÌô©</h2>
                         <div class="text-sm text-gray-500">
-                            총 <span id="totalHoldingsCount" class="font-bold text-gray-900">0</span>개 종목
+                            Ï¥ù <span id="totalHoldingsCount" class="font-bold text-gray-900">0</span>Í∞ú Ï¢ÖÎ™©
                         </div>
                     </div>
                     
@@ -351,29 +335,29 @@
                     <div class="mb-4">
                         <input type="text" 
                                id="allHoldingsSearch"
-                               placeholder="종목명, 티커, 계좌, 자산군으로 검색..." 
+                               placeholder="Ï¢ÖÎ™©Î™Ö, Ìã∞Ïª§, Í≥ÑÏ¢å, ÏûêÏÇ∞Íµ∞ÏúºÎ°ú Í≤ÄÏÉâ..." 
                                oninput="filterAllHoldings(this.value)"
                                class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors">
                     </div>
 
                     <div class="overflow-x-auto table-scroll">
-                        <table class="w-full text-left table-min-width" style="table-layout: fixed;">
+                        <table class="w-full text-left" style="table-layout: fixed;">
                             <thead>
                                 <tr class="border-b border-gray-200" id="allHoldingsTableHead">
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase w-[30%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('name')" data-sort="name">
-                                        <div class="flex items-center gap-1">종목 <span class="sort-icon"></span></div>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase w-[40%] sm:w-[30%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('name')" data-sort="name">
+                                        <div class="flex items-center gap-1">Ï¢ÖÎ™© <span class="sort-icon"></span></div>
                                     </th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase w-[20%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('assetClass')" data-sort="assetClass">
-                                        <div class="flex items-center gap-1">자산군 <span class="sort-icon"></span></div>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase w-[20%] cursor-pointer hover:bg-gray-50 select-none hidden sm:table-cell" onclick="sortAllHoldings('assetClass')" data-sort="assetClass">
+                                        <div class="flex items-center gap-1">ÏûêÏÇ∞Íµ∞ <span class="sort-icon"></span></div>
                                     </th>
-                                    <th class="px-4 py-3 text-blue-600 font-semibold text-xs uppercase text-right w-[20%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('currentValue')" data-sort="currentValue">
-                                        <div class="flex items-center justify-end gap-1">평가금액 <span class="sort-icon">▼</span></div>
+                                    <th class="px-2 sm:px-4 py-3 text-blue-600 font-semibold text-xs uppercase text-right w-[30%] sm:w-[20%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('currentValue')" data-sort="currentValue">
+                                        <div class="flex items-center justify-end gap-1">ÌèâÍ∞ÄÍ∏àÏï° <span class="sort-icon">‚ñº</span></div>
                                     </th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right w-[10%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('weight')" data-sort="weight">
-                                        <div class="flex items-center justify-end gap-1">비중 <span class="sort-icon"></span></div>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right w-[10%] cursor-pointer hover:bg-gray-50 select-none hidden sm:table-cell" onclick="sortAllHoldings('weight')" data-sort="weight">
+                                        <div class="flex items-center justify-end gap-1">ÎπÑÏ§ë <span class="sort-icon"></span></div>
                                     </th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right w-[20%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('pl')" data-sort="pl">
-                                        <div class="flex items-center justify-end gap-1">손익 <span class="sort-icon"></span></div>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right w-[30%] sm:w-[20%] cursor-pointer hover:bg-gray-50 select-none" onclick="sortAllHoldings('pl')" data-sort="pl">
+                                        <div class="flex items-center justify-end gap-1">ÏÜêÏùµ <span class="sort-icon"></span></div>
                                     </th>
                                 </tr>
                             </thead>
@@ -386,10 +370,10 @@
             
             <!-- Rebalancing Tab -->
             <div id="tab-rebalancing" class="main-tab-content hidden fade-in">
-                <div class="card rounded-lg p-4 sm:p-6">
-                    <h2 class="text-sm sm:text-lg font-bold text-gray-900 mb-2">리밸런싱 추천</h2>
-                    <p class="text-gray-600 text-xs sm:text-sm mb-4 sm:mb-6">
-                        포트폴리오를 선택하여 목표 비중과 현재 비중의 차이를 확인하고, 매수/매도할 종목을 확인하세요.
+                <div class="card rounded-lg p-6">
+                    <h2 class="text-lg font-bold text-gray-900 mb-2">Î¶¨Î∞∏Îü∞Ïã± Ï∂îÏ≤ú</h2>
+                    <p class="text-gray-600 text-sm mb-6">
+                        Ìè¨Ìä∏Ìè¥Î¶¨Ïò§Î•º ÏÑ†ÌÉùÌïòÏó¨ Î™©Ìëú ÎπÑÏ§ëÍ≥º ÌòÑÏû¨ ÎπÑÏ§ëÏùò Ï∞®Ïù¥Î•º ÌôïÏù∏ÌïòÍ≥†, Îß§Ïàò/Îß§ÎèÑÌï† Ï¢ÖÎ™©ÏùÑ ÌôïÏù∏ÌïòÏÑ∏Ïöî.
                     </p>
                     
                     <!-- Portfolio Sub-tabs -->
@@ -416,16 +400,16 @@
             '#4c1d95', '#6b21a8', '#7c3aed', '#8b5cf6'
         ];
         
-        // 계좌 색상 자동 생성 (해시 기반)
+        // Í≥ÑÏ¢å ÏÉâÏÉÅ ÏûêÎèô ÏÉùÏÑ± (Ìï¥Ïãú Í∏∞Î∞ò)
         function getAccountColor(accountName) {
-            if (!accountName) return '#9ca3af'; // 기본 회색
+            if (!accountName) return '#9ca3af'; // Í∏∞Î≥∏ ÌöåÏÉâ
 
             let hash = 0;
             for (let i = 0; i < accountName.length; i++) {
                 hash = accountName.charCodeAt(i) + ((hash << 5) - hash);
             }
 
-            // HSL 색상 생성 (파스텔 톤 유지: Saturation 65~75%, Lightness 55~65%)
+            // HSL ÏÉâÏÉÅ ÏÉùÏÑ± (ÌååÏä§ÌÖî ÌÜ§ Ïú†ÏßÄ: Saturation 65~75%, Lightness 55~65%)
             const h = Math.abs(hash) % 360;
             const s = 65 + (Math.abs(hash) % 10); 
             const l = 55 + (Math.abs(hash) % 10);
@@ -433,7 +417,7 @@
             return `hsl(${h}, ${s}%, ${l}%)`;
         }
         
-        // 기존 하드코딩된 색상 매핑 제거됨
+        // Í∏∞Ï°¥ ÌïòÎìúÏΩîÎî©Îêú ÏÉâÏÉÅ Îß§Ìïë Ï†úÍ±∞Îê®
         
         let portfolioData = null;
         let historyData = null;
@@ -463,14 +447,14 @@
         }
 
         function formatAmount(value, account) {
-            // 해외 주식 계좌인 경우 달러로 표시
-            if (account && account.includes('해외')) {
+            // Ìï¥Ïô∏ Ï£ºÏãù Í≥ÑÏ¢åÏù∏ Í≤ΩÏö∞ Îã¨Îü¨Î°ú ÌëúÏãú
+            if (account && account.includes('Ìï¥Ïô∏')) {
                 return '$' + new Intl.NumberFormat('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }).format(value);
             }
-            // 그 외에는 원화로 표시
+            // Í∑∏ Ïô∏ÏóêÎäî ÏõêÌôîÎ°ú ÌëúÏãú
             return formatCurrency(value);
         }
 
@@ -486,11 +470,11 @@
         }
 
         function formatUnit(unit) {
-            if (!unit) return '주';
+            if (!unit) return 'Ï£º';
             const unitMap = {
-                'Share': '주',
-                'Shares': '주',
-                'KRW': '₩',
+                'Share': 'Ï£º',
+                'Shares': 'Ï£º',
+                'KRW': '‚Ç©',
                 'USD': '$'
             };
             return unitMap[unit] || unit;
@@ -520,7 +504,7 @@
         }
 
         function processHistoryData(rawData) {
-            // rawData는 [{ Item, date1, date2, ... }, ...] 형태
+            // rawDataÎäî [{ Item, date1, date2, ... }, ...] ÌòïÌÉú
             const investedData = rawData.find(item => item.Item === 'Invested Amount');
             const valuationData = rawData.find(item => item.Item === 'Valuation');
             const periodReturnData = rawData.find(item => item.Item === 'Period Return');
@@ -530,10 +514,10 @@
                 return null;
             }
 
-            // 날짜 키 추출 (Item 제외)
+            // ÎÇ†Ïßú ÌÇ§ Ï∂îÏ∂ú (Item Ï†úÏô∏)
             const dateKeys = Object.keys(investedData).filter(key => key !== 'Item');
             
-            // 날짜를 Date 객체로 변환하고 정렬
+            // ÎÇ†ÏßúÎ•º Date Í∞ùÏ≤¥Î°ú Î≥ÄÌôòÌïòÍ≥† Ï†ïÎ†¨
             const sortedDates = dateKeys
                 .map(dateStr => ({
                     original: dateStr,
@@ -640,9 +624,9 @@
                 assetMap[assetClass].pl += parseFloat(item['P/L']) || 0;
                 assetMap[assetClass].cost += parseFloat(item['Total Cost']) || 0;
                 
-                // [수정된 로직] 포트폴리오 비중을 고려한 목표 비중 계산
+                // [ÏàòÏ†ïÎêú Î°úÏßÅ] Ìè¨Ìä∏Ìè¥Î¶¨Ïò§ ÎπÑÏ§ëÏùÑ Í≥†Î†§Ìïú Î™©Ìëú ÎπÑÏ§ë Í≥ÑÏÇ∞
                 // Global Target % = (Item Target % * 100) * (Portfolio Value / Total Value)
-                // 엑셀 데이터가 0.4 (40%) 형태의 소수점 비율이므로 100을 곱해서 퍼센트 단위로 변환
+                // ÏóëÏÖÄ Îç∞Ïù¥ÌÑ∞Í∞Ä 0.4 (40%) ÌòïÌÉúÏùò ÏÜåÏàòÏ†ê ÎπÑÏú®Ïù¥ÎØÄÎ°ú 100ÏùÑ Í≥±Ìï¥ÏÑú ÌçºÏÑºÌä∏ Îã®ÏúÑÎ°ú Î≥ÄÌôò
                 const itemTargetWeight = parseFloat(item['Target Weight']) || 0;
                 const portfolioVal = portfolioValues[portfolio] || 0;
                 
@@ -702,7 +686,7 @@
                     plPercent: plPercent,
                     quantity: parseFloat(item['Current Quantity']) || 0,
                     currentPrice: parseFloat(item['Current Price']) || 0,
-                    unit: formatUnit(item['Unit'])  // Unit 칼럼 변환
+                    unit: formatUnit(item['Unit'])  // Unit ÏπºÎüº Î≥ÄÌôò
                 };
                 
                 portfolioMap[portfolio].all.push(holding);
@@ -811,7 +795,7 @@
                 const value = parseFloat(item['Current Value']) || 0;
                 
                 if (name.includes('USD') || ticker.includes('USD')) {
-                    document.getElementById('ind-usdkrw').textContent = `₩${value.toLocaleString()}`;
+                    document.getElementById('ind-usdkrw').textContent = `‚Ç©${value.toLocaleString()}`;
                 } else if (name.includes('VIX') || ticker.includes('VIX')) {
                     const el = document.getElementById('ind-vix');
                     const badge = document.getElementById('ind-vix-badge');
@@ -825,15 +809,15 @@
 
                     if (value < 20) {
                         el.classList.add('text-green-600');
-                        badge.textContent = '안정';
+                        badge.textContent = 'ÏïàÏ†ï';
                         badge.classList.add('bg-green-100', 'text-green-700');
                     } else if (value < 30) {
                         el.classList.add('text-orange-500');
-                        badge.textContent = '주의';
+                        badge.textContent = 'Ï£ºÏùò';
                         badge.classList.add('bg-orange-100', 'text-orange-700');
                     } else {
                         el.classList.add('text-red-600');
-                        badge.textContent = '위험';
+                        badge.textContent = 'ÏúÑÌóò';
                         badge.classList.add('bg-red-100', 'text-red-700');
                     }
                 }
@@ -851,7 +835,7 @@
             const isPositive = data.summary.totalPL >= 0;
             
             plElement.textContent = (isPositive ? '+' : '') + formatCurrency(data.summary.totalPL);
-            plElement.className = `text-lg sm:text-2xl font-bold ${isPositive ? 'text-blue-600' : 'text-gray-500'}`;
+            plElement.className = `text-2xl font-bold ${isPositive ? 'text-blue-600' : 'text-gray-500'}`;
             
             const plPercent = Math.abs(data.summary.totalPL / data.summary.totalCost * 100);
             const plProgressWidth = Math.min(plPercent * 2, 100);
@@ -864,7 +848,7 @@
             const returnElement = document.getElementById('totalReturn');
             const returnProgressElement = document.getElementById('returnProgress');
             returnElement.textContent = (data.summary.totalReturn >= 0 ? '+' : '') + data.summary.totalReturn.toFixed(2) + '%';
-            returnElement.className = `text-lg sm:text-2xl font-bold ${data.summary.totalReturn >= 0 ? 'text-blue-600' : 'text-gray-500'}`;
+            returnElement.className = `text-2xl font-bold ${data.summary.totalReturn >= 0 ? 'text-blue-600' : 'text-gray-500'}`;
             
             const returnWidth = Math.min(Math.abs(data.summary.totalReturn) * 2, 100);
             returnProgressElement.style.width = `${returnWidth}%`;
@@ -958,7 +942,7 @@
                 data: {
                     labels: data.assets.map(a => a.name),
                     datasets: [{
-                        label: '수익률 (%)',
+                        label: 'ÏàòÏùµÎ•† (%)',
                         data: data.assets.map(a => a.return),
                         backgroundColor: data.assets.map(a => a.return >= 0 ? '#2563eb' : '#9ca3af'),
                         borderColor: data.assets.map(a => a.return >= 0 ? '#2563eb' : '#9ca3af'),
@@ -990,7 +974,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `수익률: ${context.raw.toFixed(2)}%`;
+                                    return `ÏàòÏùµÎ•†: ${context.raw.toFixed(2)}%`;
                                 }
                             }
                         }
@@ -1002,7 +986,7 @@
         function renderHistoryCharts(data) {
             if (!data) return;
 
-            // Investment Trend Chart (투자금액 vs 평가금액)
+            // Investment Trend Chart (Ìà¨ÏûêÍ∏àÏï° vs ÌèâÍ∞ÄÍ∏àÏï°)
             if (charts.investmentTrend) charts.investmentTrend.destroy();
             const investmentTrendCtx = document.getElementById('investmentTrendChart').getContext('2d');
             charts.investmentTrend = new Chart(investmentTrendCtx, {
@@ -1011,7 +995,7 @@
                     labels: data.dates,
                     datasets: [
                         {
-                            label: '투자금액',
+                            label: 'Ìà¨ÏûêÍ∏àÏï°',
                             data: data.invested,
                             borderColor: '#6b7280',
                             backgroundColor: 'rgba(107, 114, 128, 0.1)',
@@ -1022,7 +1006,7 @@
                             pointHoverRadius: 5
                         },
                         {
-                            label: '평가금액',
+                            label: 'ÌèâÍ∞ÄÍ∏àÏï°',
                             data: data.valuation,
                             borderColor: '#2563eb',
                             backgroundColor: 'rgba(37, 99, 235, 0.1)',
@@ -1084,7 +1068,7 @@
                 }
             });
 
-            // Return Trend Chart (기간 수익 vs 누적 수익)
+            // Return Trend Chart (Í∏∞Í∞Ñ ÏàòÏùµ vs ÎàÑÏ†Å ÏàòÏùµ)
             if (charts.returnTrend) charts.returnTrend.destroy();
             const returnTrendCtx = document.getElementById('returnTrendChart').getContext('2d');
             charts.returnTrend = new Chart(returnTrendCtx, {
@@ -1093,14 +1077,14 @@
                     labels: data.dates,
                     datasets: [
                         {
-                            label: '기간 수익',
+                            label: 'Í∏∞Í∞Ñ ÏàòÏùµ',
                             data: data.periodReturn,
                             backgroundColor: data.periodReturn.map(v => v >= 0 ? 'rgba(37, 99, 235, 0.6)' : 'rgba(156, 163, 175, 0.6)'),
                             borderColor: data.periodReturn.map(v => v >= 0 ? '#2563eb' : '#9ca3af'),
                             borderWidth: 1
                         },
                         {
-                            label: '누적 수익',
+                            label: 'ÎàÑÏ†Å ÏàòÏùµ',
                             data: data.cumulativeReturn,
                             type: 'line',
                             borderColor: '#1e40af',
@@ -1167,40 +1151,40 @@
             const tbody = document.getElementById('accountsTableBody');
             tbody.innerHTML = data.accounts.map(account => `
                 <tr class="hover:bg-gray-100 transition-colors cursor-pointer" onclick="toggleAccountHoldings(this)">
-                    <td class="px-4 py-4 text-gray-900 font-semibold text-sm">
-                        <div class="flex items-center gap-3">
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 text-gray-900 font-semibold text-sm">
+                        <div class="flex items-center gap-2 sm:gap-3">
                             <div class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${getAccountColor(account.name)}"></div>
-                            <span>${account.name}</span>
+                            <span class="truncate">${account.name}</span>
                         </div>
                     </td>
-                    <td class="px-4 py-4 text-right text-gray-900 font-bold text-sm">${formatCurrency(account.value)}</td>
-                    <td class="px-4 py-4 text-right text-gray-600 text-sm">${formatCurrency(account.cost)}</td>
-                    <td class="px-4 py-4 text-right font-semibold text-sm ${account.pl >= 0 ? 'text-blue-600' : 'text-gray-500'}">
-                        ${account.pl >= 0 ? '＋' : ''}${formatCurrency(account.pl)}
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 text-right text-gray-900 font-bold text-sm">${formatCurrency(account.value)}</td>
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 text-right text-gray-600 text-sm hidden sm:table-cell">${formatCurrency(account.cost)}</td>
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 text-right font-semibold text-sm ${account.pl >= 0 ? 'text-blue-600' : 'text-gray-500'}">
+                        ${account.pl >= 0 ? 'Ôºã' : ''}${formatCurrency(account.pl)}
                     </td>
-                    <td class="px-4 py-4 text-right font-semibold text-sm ${account.return >= 0 ? 'text-blue-600' : 'text-gray-500'}">
-                        ${account.return >= 0 ? '＋' : ''}${account.return.toFixed(2)}%
+                    <td class="px-2 sm:px-4 py-3 sm:py-4 text-right font-semibold text-sm ${account.return >= 0 ? 'text-blue-600' : 'text-gray-500'}">
+                        ${account.return >= 0 ? 'Ôºã' : ''}${account.return.toFixed(2)}%
                     </td>
                 </tr>
                 <tr>
                     <td colspan="5" class="p-0">
                         <div class="account-holdings">
-                            <div class="my-3 mx-4 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                            <div class="my-2 sm:my-3 mx-2 sm:mx-4 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                                 <table class="w-full" style="table-layout: fixed;">
                                     <tbody class="divide-y divide-gray-100">
                                         ${account.holdings.map(holding => `
                                             <tr class="bg-white hover:bg-gray-50 text-sm transition-colors">
-                                                <td class="px-4 py-3 text-gray-800" style="width: 30%;">
-                                                    <div class="font-medium">${holding.name}</div>
+                                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-gray-800" style="width: 30%;">
+                                                    <div class="font-medium truncate">${holding.name}</div>
                                                     <div class="text-xs text-gray-500 mt-0.5">${holding.ticker}</div>
                                                 </td>
-                                                <td class="px-4 py-3 text-right text-gray-800 font-medium" style="width: 20%;">${formatCurrency(holding.currentValue)}</td>
-                                                <td class="px-4 py-3 text-right text-gray-600" style="width: 20%;">${formatCurrency(holding.cost)}</td>
-                                                <td class="px-4 py-3 text-right font-medium ${holding.pl >= 0 ? 'text-blue-600' : 'text-gray-500'}" style="width: 15%;">
-                                                    ${holding.pl >= 0 ? '＋' : ''}${formatCurrency(holding.pl)}
+                                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-right text-gray-800 font-medium" style="width: 25%;">${formatCurrency(holding.currentValue)}</td>
+                                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-right text-gray-600 hidden sm:table-cell" style="width: 20%;">${formatCurrency(holding.cost)}</td>
+                                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-right font-medium ${holding.pl >= 0 ? 'text-blue-600' : 'text-gray-500'}" style="width: 25%;">
+                                                    ${holding.pl >= 0 ? 'Ôºã' : ''}${formatCurrency(holding.pl)}
                                                 </td>
-                                                <td class="px-4 py-3 text-right font-medium ${holding.plPercent >= 0 ? 'text-blue-600' : 'text-gray-500'}" style="width: 15%;">
-                                                     ${holding.plPercent >= 0 ? '＋' : ''}${(holding.plPercent).toFixed(2)}%
+                                                <td class="px-2 sm:px-4 py-2 sm:py-3 text-right font-medium ${holding.plPercent >= 0 ? 'text-blue-600' : 'text-gray-500'}" style="width: 20%;">
+                                                     ${holding.plPercent >= 0 ? 'Ôºã' : ''}${(holding.plPercent).toFixed(2)}%
                                                 </td>
                                             </tr>
                                         `).join('')}
@@ -1284,32 +1268,32 @@
                 const driftPercent = asset.targetWeight > 0 ? (drift / asset.targetWeight * 100) : 0;
                 
                 return `
-                    <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer" onclick="selectAssetClass('${asset.name}')">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-gray-900 font-semibold">${asset.name}</span>
-                            <span class="text-lg font-bold ${isPositive ? 'text-blue-600' : 'text-gray-500'}">
+                    <div class="border border-gray-200 rounded-lg p-3 sm:p-4 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer" onclick="selectAssetClass('${asset.name}')">
+                        <div class="flex justify-between items-center mb-2 sm:mb-3">
+                            <span class="text-gray-900 font-semibold text-sm sm:text-base">${asset.name}</span>
+                            <span class="text-base sm:text-lg font-bold ${isPositive ? 'text-blue-600' : 'text-gray-500'}">
                                 ${isPositive ? '+' : ''}${asset.return.toFixed(2)}%
                             </span>
                         </div>
-                        <div class="w-full bg-gray-100 rounded-full h-2 mb-3">
+                        <div class="w-full bg-gray-100 rounded-full h-2 mb-2 sm:mb-3">
                             <div class="h-2 rounded-full transition-all ${isPositive ? 'bg-blue-600' : 'bg-gray-400'}" style="width: ${width}%"></div>
                         </div>
                         <div class="flex justify-between text-xs text-gray-600 mb-1">
-                            <span>평가금액: ${formatCurrency(asset.value)}</span>
+                            <span>ÌèâÍ∞ÄÍ∏àÏï°: ${formatCurrency(asset.value)}</span>
                             <div class="text-right">
-                                <span>비중: ${asset.weight.toFixed(2)}%</span>
+                                <span>ÎπÑÏ§ë: ${asset.weight.toFixed(2)}%</span>
                                 ${asset.targetWeight > 0 ? `
-                                    <span class="text-gray-400 ml-1"> (목표: ${asset.targetWeight.toFixed(1)}%)</span>
+                                    <span class="text-gray-400 ml-1 hidden sm:inline"> (Î™©Ìëú: ${asset.targetWeight.toFixed(1)}%)</span>
                                 ` : ''}
                             </div>
                         </div>
                         <div class="flex justify-between text-xs">
-                            <span class="text-gray-600">투자금: ${formatCurrency(asset.cost)}</span>
+                            <span class="text-gray-600 hidden sm:inline">Ìà¨ÏûêÍ∏à: ${formatCurrency(asset.cost)}</span>
                             <div>
-                                <span class="${isPositive ? 'text-blue-600' : 'text-gray-500'} mr-2">손익: ${isPositive ? '+' : ''}${formatCurrency(asset.pl)}</span>
+                                <span class="${isPositive ? 'text-blue-600' : 'text-gray-500'} sm:mr-2">ÏÜêÏùµ: ${isPositive ? '+' : ''}${formatCurrency(asset.pl)}</span>
                                 ${asset.targetWeight > 0 ? `
-                                    <span class="${Math.abs(drift) > 1 ? 'text-red-500 font-bold' : 'text-gray-400'}">
-                                        괴리: ${drift >= 0 ? '+' : ''}${drift.toFixed(1)}%p
+                                    <span class="${Math.abs(drift) > 1 ? 'text-red-500 font-bold' : 'text-gray-400'} ml-1 sm:ml-0">
+                                        Í¥¥Î¶¨: ${drift >= 0 ? '+' : ''}${drift.toFixed(1)}%p
                                     </span>
                                 ` : ''}
                             </div>
@@ -1400,7 +1384,7 @@
             }
 
             // 2. Render
-            title.textContent = `'${assetName}' 보유 종목 상세 (${holdings.length})`;
+            title.textContent = `'${assetName}' Î≥¥Ïú† Ï¢ÖÎ™© ÏÉÅÏÑ∏ (${holdings.length})`;
             
             tbody.innerHTML = holdings.map(item => {
                 const isPositive = item.pl >= 0;
@@ -1427,7 +1411,7 @@
                         </td>
                         <td class="py-3 text-right align-top">
                             <div class="text-gray-900 font-semibold text-sm">${formatCurrency(item.currentValue)}</div>
-                            <div class="text-gray-400 text-[11px] mt-0.5">비중 ${(item.currentValue / portfolioData.summary.totalValue * 100).toFixed(2)}%</div>
+                            <div class="text-gray-400 text-[11px] mt-0.5">ÎπÑÏ§ë ${(item.currentValue / portfolioData.summary.totalValue * 100).toFixed(2)}%</div>
                         </td>
                         <td class="py-3 pr-1 text-right align-top">
                             <div class="font-semibold text-sm ${isPositive ? 'text-blue-600' : 'text-gray-500'}">
@@ -1458,7 +1442,7 @@
                 const labels = Object.keys(distribution);
                 const values = Object.values(distribution);
                 
-                chartTitle = `'${selectedAssetClass}' 계좌별 분포`;
+                chartTitle = `'${selectedAssetClass}' Í≥ÑÏ¢åÎ≥Ñ Î∂ÑÌè¨`;
                 chartType = 'pie';
                 chartData = {
                     labels: labels,
@@ -1489,12 +1473,12 @@
                     }
                 };
             } else {
-                chartTitle = '자산군별 구성';
+                chartTitle = 'ÏûêÏÇ∞Íµ∞Î≥Ñ Íµ¨ÏÑ±';
                 chartType = 'bar';
                 chartData = {
                     labels: data.assets.map(a => a.name),
                     datasets: [{
-                        label: '평가금액',
+                        label: 'ÌèâÍ∞ÄÍ∏àÏï°',
                         data: data.assets.map(a => a.value),
                         backgroundColor: CHART_COLORS,
                     }]
@@ -1505,7 +1489,7 @@
                     plugins: {
                         title: { display: false },
                         legend: { display: false },
-                        tooltip: { callbacks: { label: function(context) { return `평가금액: ${formatCurrency(context.raw)}`; } } }
+                        tooltip: { callbacks: { label: function(context) { return `ÌèâÍ∞ÄÍ∏àÏï°: ${formatCurrency(context.raw)}`; } } }
                     },
                     scales: {
                         y: { beginAtZero: true, grid: { color: '#f3f4f6' }, ticks: { color: '#6b7280', font: { size: 11, family: 'Inter' }, callback: function(value) { return formatCurrency(value); } } },
@@ -1528,7 +1512,7 @@
             const tabsContainer = document.getElementById('portfolioTabs');
             
             if (portfolios.length === 0) {
-                tabsContainer.innerHTML = '<p class="text-gray-600 text-sm py-4">포트폴리오 데이터가 없습니다.</p>';
+                tabsContainer.innerHTML = '<p class="text-gray-600 text-sm py-4">Ìè¨Ìä∏Ìè¥Î¶¨Ïò§ Îç∞Ïù¥ÌÑ∞Í∞Ä ÏóÜÏäµÎãàÎã§.</p>';
                 return;
             }
             
@@ -1561,115 +1545,115 @@
             
             contentContainer.innerHTML = `
                 <!-- Summary -->
-                <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
-                    <div class="border border-gray-200 rounded-lg p-3 sm:p-4">
-                        <div class="text-gray-500 text-[10px] sm:text-xs font-semibold mb-1">총 보유 종목</div>
-                        <div class="text-xl sm:text-2xl font-bold text-gray-900">${all.length}개</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="text-gray-500 text-xs font-semibold mb-1">Ï¥ù Î≥¥Ïú† Ï¢ÖÎ™©</div>
+                        <div class="text-2xl font-bold text-gray-900">${all.length}Í∞ú</div>
                             </div>
-                    <div class="border border-red-200 bg-red-50 rounded-lg p-3 sm:p-4">
-                        <div class="text-red-700 text-[10px] sm:text-xs font-semibold mb-1">매수 필요</div>
-                        <div class="text-xl sm:text-2xl font-bold text-red-600">${buyItems.length}개</div>
+                    <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                        <div class="text-red-700 text-xs font-semibold mb-1">Îß§Ïàò ÌïÑÏöî</div>
+                        <div class="text-2xl font-bold text-red-600">${buyItems.length}Í∞ú</div>
                             </div>
-                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-3 sm:p-4">
-                        <div class="text-blue-700 text-[10px] sm:text-xs font-semibold mb-1">매도 필요</div>
-                        <div class="text-xl sm:text-2xl font-bold text-blue-600">${sellItems.length}개</div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                        <div class="text-blue-700 text-xs font-semibold mb-1">Îß§ÎèÑ ÌïÑÏöî</div>
+                        <div class="text-2xl font-bold text-blue-600">${sellItems.length}Í∞ú</div>
                             </div>
                         </div>
 
                 <!-- Rebalancing Actions -->
                 ${needsRebalancing ? `
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                         <!-- Buy -->
-                        <div class="border border-red-200 rounded-lg p-3 sm:p-5 bg-red-50/30">
-                            <h3 class="text-sm sm:text-base font-bold text-red-700 mb-3 sm:mb-4">매수 (${buyItems.length})</h3>
+                        <div class="border border-red-200 rounded-lg p-5 bg-red-50/30">
+                            <h3 class="text-base font-bold text-red-700 mb-4">Îß§Ïàò (${buyItems.length})</h3>
                             ${buyItems.length > 0 ? `
                                 <div class="space-y-3">
                                     ${buyItems.map(item => `
-                                        <div class="bg-white rounded-lg p-3 sm:p-4 border border-red-100 hover:border-red-300 transition-colors">
+                                        <div class="bg-white rounded-lg p-4 border border-red-100 hover:border-red-300 transition-colors">
                                             <div class="flex justify-between items-start mb-2">
-                                                <div class="min-w-0 flex-1 mr-2">
-                                                    <div class="text-gray-900 font-semibold text-sm truncate">${item.name}</div>
-                                                    <div class="text-gray-500 text-xs mt-0.5 truncate">${item.ticker} · ${item.account}</div>
+                                                <div>
+                                                    <div class="text-gray-900 font-semibold">${item.name}</div>
+                                                    <div class="text-gray-500 text-xs mt-0.5">${item.ticker} ¬∑ ${item.account}</div>
                             </div>
-                                                <div class="text-right flex-shrink-0">
-                                                    <div class="text-red-600 font-bold text-sm">+${item.buySell.toLocaleString()}${item.unit}</div>
-                                                    ${item.unit === '주' ? `<div class="text-gray-500 text-xs">${formatAmount(item.buySell * item.currentPrice, item.account)}</div>` : ''}
+                                                <div class="text-right">
+                                                    <div class="text-red-600 font-bold">+${item.buySell.toLocaleString()}${item.unit}</div>
+                                                    ${item.unit === 'Ï£º' ? `<div class="text-gray-500 text-xs">${formatAmount(item.buySell * item.currentPrice, item.account)}</div>` : ''}
                             </div>
                             </div>
-                                            <div class="flex justify-between text-xs mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100">
-                                                <span class="text-gray-600">현재: ${item.currentWeight.toFixed(2)}%</span>
-                                                <span class="text-blue-600 font-semibold">→ 목표: ${item.targetWeight.toFixed(2)}%</span>
+                                            <div class="flex justify-between text-xs mt-3 pt-3 border-t border-gray-100">
+                                                <span class="text-gray-600">ÌòÑÏû¨: ${item.currentWeight.toFixed(2)}%</span>
+                                                <span class="text-blue-600 font-semibold">‚Üí Î™©Ìëú: ${item.targetWeight.toFixed(2)}%</span>
                         </div>
                     </div>
                                 `).join('')}
                                 </div>
                             ` : `
-                                <p class="text-gray-500 text-center py-8 text-sm">매수할 종목이 없습니다.</p>
+                                <p class="text-gray-500 text-center py-8 text-sm">Îß§ÏàòÌï† Ï¢ÖÎ™©Ïù¥ ÏóÜÏäµÎãàÎã§.</p>
                             `}
                     </div>
 
                         <!-- Sell -->
-                        <div class="border border-blue-200 rounded-lg p-3 sm:p-5 bg-blue-50/30">
-                            <h3 class="text-sm sm:text-base font-bold text-blue-700 mb-3 sm:mb-4">매도 (${sellItems.length})</h3>
+                        <div class="border border-blue-200 rounded-lg p-5 bg-blue-50/30">
+                            <h3 class="text-base font-bold text-blue-700 mb-4">Îß§ÎèÑ (${sellItems.length})</h3>
                             ${sellItems.length > 0 ? `
                                 <div class="space-y-3">
                                     ${sellItems.map(item => `
-                                        <div class="bg-white rounded-lg p-3 sm:p-4 border border-blue-100 hover:border-blue-300 transition-colors">
+                                        <div class="bg-white rounded-lg p-4 border border-blue-100 hover:border-blue-300 transition-colors">
                                             <div class="flex justify-between items-start mb-2">
-                                                <div class="min-w-0 flex-1 mr-2">
-                                                    <div class="text-gray-900 font-semibold text-sm truncate">${item.name}</div>
-                                                    <div class="text-gray-500 text-xs mt-0.5 truncate">${item.ticker} · ${item.account}</div>
+                                                <div>
+                                                    <div class="text-gray-900 font-semibold">${item.name}</div>
+                                                    <div class="text-gray-500 text-xs mt-0.5">${item.ticker} ¬∑ ${item.account}</div>
                                         </div>
-                                                <div class="text-right flex-shrink-0">
-                                                    <div class="text-blue-600 font-bold text-sm">${item.buySell.toLocaleString()}${item.unit}</div>
-                                                    ${item.unit === '주' ? `<div class="text-gray-500 text-xs">${formatAmount(Math.abs(item.buySell * item.currentPrice), item.account)}</div>` : ''}
+                                                <div class="text-right">
+                                                    <div class="text-blue-600 font-bold">${item.buySell.toLocaleString()}${item.unit}</div>
+                                                    ${item.unit === 'Ï£º' ? `<div class="text-gray-500 text-xs">${formatAmount(Math.abs(item.buySell * item.currentPrice), item.account)}</div>` : ''}
                                         </div>
                                         </div>
-                                            <div class="flex justify-between text-xs mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-gray-100">
-                                                <span class="text-gray-600">현재: ${item.currentWeight.toFixed(2)}%</span>
-                                                <span class="text-blue-600 font-semibold">→ 목표: ${item.targetWeight.toFixed(2)}%</span>
+                                            <div class="flex justify-between text-xs mt-3 pt-3 border-t border-gray-100">
+                                                <span class="text-gray-600">ÌòÑÏû¨: ${item.currentWeight.toFixed(2)}%</span>
+                                                <span class="text-blue-600 font-semibold">‚Üí Î™©Ìëú: ${item.targetWeight.toFixed(2)}%</span>
                                             </div>
                                         </div>
                                     `).join('')}
                                 </div>
                             ` : `
-                                <p class="text-gray-500 text-center py-8 text-sm">매도할 종목이 없습니다.</p>
+                                <p class="text-gray-500 text-center py-8 text-sm">Îß§ÎèÑÌï† Ï¢ÖÎ™©Ïù¥ ÏóÜÏäµÎãàÎã§.</p>
                             `}
                             </div>
                         </div>
                 ` : `
                     <div class="border border-gray-200 rounded-lg p-12 text-center mb-6">
-                        <div class="text-5xl mb-4">✓</div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2">리밸런싱이 필요하지 않습니다</h3>
-                        <p class="text-gray-600 text-sm">현재 포트폴리오가 목표 비중에 잘 맞춰져 있습니다.</p>
+                        <div class="text-5xl mb-4">‚úì</div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Î¶¨Î∞∏Îü∞Ïã±Ïù¥ ÌïÑÏöîÌïòÏßÄ ÏïäÏäµÎãàÎã§</h3>
+                        <p class="text-gray-600 text-sm">ÌòÑÏû¨ Ìè¨Ìä∏Ìè¥Î¶¨Ïò§Í∞Ä Î™©Ìëú ÎπÑÏ§ëÏóê Ïûò ÎßûÏ∂∞Ï†∏ ÏûàÏäµÎãàÎã§.</p>
                     </div>
                 `}
                 
                 <!-- All Holdings -->
-                <div class="border border-gray-200 rounded-lg p-3 sm:p-5">
-                    <h3 class="text-sm sm:text-base font-bold text-gray-900 mb-3 sm:mb-4">전체 보유 종목 (${all.length})</h3>
-
+                <div class="border border-gray-200 rounded-lg p-5">
+                    <h3 class="text-base font-bold text-gray-900 mb-4">Ï†ÑÏ≤¥ Î≥¥Ïú† Ï¢ÖÎ™© (${all.length})</h3>
+                    
                     <!-- Search -->
-                    <div class="mb-3 sm:mb-4">
-                                        <input type="text"
+                    <div class="mb-4">
+                                        <input type="text" 
                                id="holdingsSearch"
-                                               placeholder="종목 검색..."
+                                               placeholder="Ï¢ÖÎ™© Í≤ÄÏÉâ..." 
                                oninput="filterHoldings(this.value)"
-                               class="w-full px-3 sm:px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors">
+                               class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition-colors">
                                     </div>
-
+                    
                     <div class="overflow-x-auto table-scroll">
-                        <table class="w-full text-left table-min-width">
+                        <table class="w-full text-left">
                                         <thead>
                                 <tr class="border-b border-gray-200">
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase">종목</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase">계좌</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">수량</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">평가금액</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">현재비중</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">목표비중</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">손익</th>
-                                    <th class="px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-center">상태</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase">Ï¢ÖÎ™©</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase hidden sm:table-cell">Í≥ÑÏ¢å</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right hidden sm:table-cell">ÏàòÎüâ</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">ÌèâÍ∞ÄÍ∏àÏï°</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right hidden sm:table-cell">ÌòÑÏû¨ÎπÑÏ§ë</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right hidden sm:table-cell">Î™©ÌëúÎπÑÏ§ë</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-right">ÏÜêÏùµ</th>
+                                    <th class="px-2 sm:px-4 py-3 text-gray-600 font-semibold text-xs uppercase text-center">ÏÉÅÌÉú</th>
                                             </tr>
                                         </thead>
                             <tbody class="divide-y divide-gray-100" id="holdingsTableBody">
@@ -1677,19 +1661,19 @@
                                     const needsAction = item.buySell !== 0;
                                     const isBuy = item.buySell > 0;
                                     const plPositive = item.pl >= 0;
-                                    
+
                                     return `
                                         <tr class="holdings-row hover:bg-gray-50 transition-colors">
-                                            <td class="px-4 py-3">
-                                                <div class="text-gray-900 font-medium text-sm">${item.name}</div>
-                                                <div class="text-gray-500 text-xs">${item.ticker}</div>
+                                            <td class="px-2 sm:px-4 py-3">
+                                                <div class="text-gray-900 font-medium text-sm truncate">${item.name}</div>
+                                                <div class="text-gray-500 text-xs truncate">${item.ticker}</div>
                                                     </td>
-                                            <td class="px-4 py-3 text-gray-600 text-xs">${item.account}</td>
-                                            <td class="px-4 py-3 text-right text-gray-900 text-sm">${item.name === '예수금 잔액' ? '-' : item.quantity.toLocaleString()}</td>
-                                            <td class="px-4 py-3 text-right text-gray-900 font-semibold text-sm">${formatCurrency(item.currentValue)}</td>
-                                            <td class="px-4 py-3 text-right text-gray-600 text-sm">${item.currentWeight.toFixed(2)}%</td>
-                                            <td class="px-4 py-3 text-right text-blue-600 font-medium text-sm">${item.targetWeight.toFixed(2)}%</td>
-                                            <td class="px-4 py-3 text-right">
+                                            <td class="px-2 sm:px-4 py-3 text-gray-600 text-xs hidden sm:table-cell">${item.account}</td>
+                                            <td class="px-2 sm:px-4 py-3 text-right text-gray-900 text-sm hidden sm:table-cell">${item.name === 'ÏòàÏàòÍ∏à ÏûîÏï°' ? '-' : item.quantity.toLocaleString()}</td>
+                                            <td class="px-2 sm:px-4 py-3 text-right text-gray-900 font-semibold text-sm">${formatCurrency(item.currentValue)}</td>
+                                            <td class="px-2 sm:px-4 py-3 text-right text-gray-600 text-sm hidden sm:table-cell">${item.currentWeight.toFixed(2)}%</td>
+                                            <td class="px-2 sm:px-4 py-3 text-right text-blue-600 font-medium text-sm hidden sm:table-cell">${item.targetWeight.toFixed(2)}%</td>
+                                            <td class="px-2 sm:px-4 py-3 text-right">
                                                 <div class="font-semibold text-sm ${plPositive ? 'text-blue-600' : 'text-gray-500'}">
                                                     ${plPositive ? '+' : ''}${formatCurrency(item.pl)}
                                                 </div>
@@ -1697,14 +1681,14 @@
                                                     ${plPositive ? '+' : ''}${item.plPercent.toFixed(2)}%
                                                 </div>
                                             </td>
-                                            <td class="px-4 py-3 text-center">
+                                            <td class="px-2 sm:px-4 py-3 text-center">
                                                 ${needsAction ? `
-                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-semibold ${isBuy ? 'bg-red-100 text-red-700 border border-red-200' : 'bg-blue-100 text-blue-700 border border-blue-200'}">
-                                                        ${isBuy ? '▲' : '▼'} ${Math.abs(item.buySell).toLocaleString()}${item.unit}
+                                                    <span class="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-1 rounded text-xs font-semibold ${isBuy ? 'bg-red-100 text-red-700 border border-red-200' : 'bg-blue-100 text-blue-700 border border-blue-200'}">
+                                                        ${isBuy ? '‚ñ≤' : '‚ñº'} ${Math.abs(item.buySell).toLocaleString()}${item.unit}
                                                         </span>
                                                 ` : `
-                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-medium bg-gray-50 text-gray-400 border border-gray-100">
-                                                        유지
+                                                    <span class="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-1 rounded text-xs font-medium bg-gray-50 text-gray-400 border border-gray-100">
+                                                        Ïú†ÏßÄ
                                                     </span>
                                                 `}
                                                     </td>
@@ -1714,15 +1698,16 @@
                                         </tbody>
                                         <tfoot>
                                             <tr class="border-t-2 border-gray-300 bg-gray-50">
-                                                <td class="px-4 py-3 font-bold text-gray-900 text-sm text-center" colspan="3">합계</td>
-                                                <td class="px-4 py-3 text-right text-gray-900 font-bold text-sm">${formatCurrency(totalCurrentValue)}</td>
-                                                <td class="px-4 py-3" colspan="2"></td>
-                                                <td class="px-4 py-3 text-right">
+                                                <td class="px-2 sm:px-4 py-3 font-bold text-gray-900 text-sm text-center" colspan="1"><span class="hidden sm:inline" >Ìï©</span><span class="sm:hidden">Ìï©Í≥Ñ</span></td>
+                                                <td class="px-2 sm:px-4 py-3 hidden sm:table-cell" colspan="2"></td>
+                                                <td class="px-2 sm:px-4 py-3 text-right text-gray-900 font-bold text-sm">${formatCurrency(totalCurrentValue)}</td>
+                                                <td class="px-2 sm:px-4 py-3 hidden sm:table-cell" colspan="2"></td>
+                                                <td class="px-2 sm:px-4 py-3 text-right">
                                                     <div class="font-bold text-sm ${totalPl >= 0 ? 'text-blue-600' : 'text-gray-500'}">
                                                         ${totalPl >= 0 ? '+' : ''}${formatCurrency(totalPl)}
                                                     </div>
                                                 </td>
-                                                <td class="px-4 py-3"></td>
+                                                <td class="px-2 sm:px-4 py-3"></td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -1762,17 +1747,17 @@
                 
                 return `
                     <tr class="all-holdings-row hover:bg-gray-50 transition-colors">
-                        <td class="px-4 py-3">
+                        <td class="px-2 sm:px-4 py-3">
                             <div class="text-gray-900 font-medium text-sm truncate" title="${item.name}">${item.name}</div>
                             <div class="text-gray-500 text-xs truncate">${item.ticker}</div>
                         </td>
-                        <td class="px-4 py-3 text-gray-600 text-xs">${item.assetClass}</td>
-                        <td class="px-4 py-3 text-right">
+                        <td class="px-2 sm:px-4 py-3 text-gray-600 text-xs hidden sm:table-cell">${item.assetClass}</td>
+                        <td class="px-2 sm:px-4 py-3 text-right">
                             <div class="text-gray-900 font-medium text-sm">${formatCurrency(item.currentValue)}</div>
                             <div class="text-gray-500 text-xs">${item.quantity.toLocaleString()} ${item.unit}</div>
                         </td>
-                        <td class="px-4 py-3 text-right text-gray-600 text-sm">${item.weight.toFixed(2)}%</td>
-                        <td class="px-4 py-3 text-right">
+                        <td class="px-2 sm:px-4 py-3 text-right text-gray-600 text-sm hidden sm:table-cell">${item.weight.toFixed(2)}%</td>
+                        <td class="px-2 sm:px-4 py-3 text-right">
                             <div class="font-medium text-sm ${plPositive ? 'text-blue-600' : 'text-gray-500'}">
                                 ${plPositive ? '+' : ''}${formatCurrency(item.pl)}
                             </div>
@@ -1811,7 +1796,7 @@
                 allHoldingsSortState.direction = allHoldingsSortState.direction === 'desc' ? 'asc' : 'desc';
             } else {
                 allHoldingsSortState.column = column;
-                // 기본 정렬 방향: 문자열은 오름차순, 숫자는 내림차순
+                // Í∏∞Î≥∏ Ï†ïÎ†¨ Î∞©Ìñ•: Î¨∏ÏûêÏó¥ÏùÄ Ïò§Î¶ÑÏ∞®Ïàú, Ïà´ÏûêÎäî ÎÇ¥Î¶ºÏ∞®Ïàú
                 if (column === 'name' || column === 'assetClass') {
                     allHoldingsSortState.direction = 'asc';
                 } else {
@@ -1825,7 +1810,7 @@
                 let valA = a[column];
                 let valB = b[column];
                 
-                // 문자열 처리
+                // Î¨∏ÏûêÏó¥ Ï≤òÎ¶¨
                 if (typeof valA === 'string') {
                     valA = valA.toLowerCase();
                     valB = valB.toLowerCase();
@@ -1839,7 +1824,7 @@
             renderAllHoldings(portfolioData);
             updateAllHoldingsHeaders();
             
-            // 검색 필터 유지
+            // Í≤ÄÏÉâ ÌïÑÌÑ∞ Ïú†ÏßÄ
             const searchInput = document.getElementById('allHoldingsSearch');
             if (searchInput && searchInput.value) {
                 filterAllHoldings(searchInput.value);
@@ -1860,14 +1845,14 @@
                 if (col === allHoldingsSortState.column) {
                     th.classList.remove('text-gray-600');
                     th.classList.add('text-blue-600');
-                    if (iconSpan) iconSpan.textContent = allHoldingsSortState.direction === 'asc' ? '▲' : '▼';
+                    if (iconSpan) iconSpan.textContent = allHoldingsSortState.direction === 'asc' ? '‚ñ≤' : '‚ñº';
                 }
             });
         }
 
         // Initialize
         async function init() {
-            // 두 API를 동시에 호출
+            // Îëê APIÎ•º ÎèôÏãúÏóê Ìò∏Ï∂ú
             const [portfolio, history] = await Promise.all([
                 fetchPortfolioData(),
                 fetchHistoryData()
@@ -1879,11 +1864,11 @@
             if (!portfolioData) {
                 document.getElementById('loading').innerHTML = `
                     <div class="text-center">
-                        <div class="text-5xl mb-4 text-gray-400">⚠</div>
-                        <div class="text-gray-900 text-lg font-bold mb-2">데이터를 불러올 수 없습니다</div>
-                        <div class="text-gray-600 text-sm mb-4">네트워크 연결을 확인하고 다시 시도해주세요.</div>
+                        <div class="text-5xl mb-4 text-gray-400">‚ö†</div>
+                        <div class="text-gray-900 text-lg font-bold mb-2">Îç∞Ïù¥ÌÑ∞Î•º Î∂àÎü¨Ïò¨ Ïàò ÏóÜÏäµÎãàÎã§</div>
+                        <div class="text-gray-600 text-sm mb-4">ÎÑ§Ìä∏ÏõåÌÅ¨ Ïó∞Í≤∞ÏùÑ ÌôïÏù∏ÌïòÍ≥† Îã§Ïãú ÏãúÎèÑÌï¥Ï£ºÏÑ∏Ïöî.</div>
                          <button class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm font-medium" onclick="location.reload()">
-                            새로고침
+                            ÏÉàÎ°úÍ≥†Ïπ®
                         </button>
                     </div>
                 `;
